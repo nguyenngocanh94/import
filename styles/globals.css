@@ -14,3 +14,11 @@ a {
 * {
   box-sizing: border-box;
 }
+
+.field-container{
+  display: flex;
+}
+
+.field-child:not(:first-child){
+  margin-left: 20px;
+}
