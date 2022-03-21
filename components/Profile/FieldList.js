@@ -4,7 +4,7 @@ import { TiEdit } from 'react-icons/ti';
 import FieldForm from "./FieldForm";
 import Field from "./Field";
 
-const FieldList = ({dateFormats, fieldTypes, }) => {
+const FieldList = ({dateFormats, fieldTypes }) => {
     const [fields, setFields] = useState([]);
     let groups = [];
     const setGroups = (grs) =>{
@@ -16,14 +16,17 @@ const FieldList = ({dateFormats, fieldTypes, }) => {
     };
 
 
+    console.log(fieldTypes)
+    console.log(dateFormats)
 
-
-    return fields.map((field, index) => (
+    return (
         <>
             <FieldForm onSave={onSave} dateFormats={dateFormats} typesOfField={fieldTypes} groups={groups} setGroups={setGroups} />
             <Field
-
+                fields={fields}
             />
         </>
-    ));
+    );
 }
+
+export default FieldList;

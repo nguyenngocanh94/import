@@ -2,6 +2,7 @@ import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import FieldForm from "../components/Profile/FieldForm";
+import FieldList from "../components/Profile/FieldList";
 
 export default function Home() {
   let items = [];
@@ -16,7 +17,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <FieldForm setGroups={setItems} groups={items} typesOfField={['string','int','array','Datetime']} dateFormats={['y/m/d','d/m/y']}/>
+      <FieldList fieldTypes={['string','int','array','Datetime']} dateFormats={['y/m/d','d/m/y']}/>
     </div>
   )
 }
