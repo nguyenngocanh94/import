@@ -1,23 +1,21 @@
 import {Button, Divider, Input, Select, Space, Switch, Typography} from "antd";
 import {textToContest} from "../../functions/input";
-import {EditOutlined, DeleteOutlined} from "@ant-design/icons";
+import {DeleteTwoTone,EditTwoTone} from "@ant-design/icons";
 import React from "react";
 
 const Field = ({ fields }) => {
 
-    return fields.map((field, index) => (
-        <div
-            className=""
-            key={index}
-        >
-            <div className="field-container">
+    return (<div className="field-list">
+        {fields.map((field, index) => (
+
+            <div key={index} className="field-container">
                 <div className="field-child">
                     <label>Name ✍️</label>
                     <Input disabled value={field.name} />
                 </div>
                 <div className="field-child">
                     <label>Static 👇</label>
-                    <div><Switch defaultChecked={field.isStatic} /></div>
+                    <div><Switch disable={true} checked={field.static} /></div>
                 </div>
                 <div className="field-child">
                     <label>Type 🚴‍♀</label>
@@ -31,13 +29,14 @@ const Field = ({ fields }) => {
                     <label>Group Id 👨‍👩‍👧‍👧</label>
                     <Input disabled value={field.group_id} />
                 </div>}
-            </div>
-            <div className='icons'>
-                <EditOutlined />
-                <DeleteOutlined />
-            </div>
+
+                <div className="field-action">
+                    <DeleteTwoTone style={{ fontSize: '20px', color: '#08c' }} />
+                    <EditTwoTone  style={{ fontSize: '20px', color: '#08c' }}/>
+                </div>
         </div>
-    ));
+        ))}
+        </div>)
 }
 
 export default Field;

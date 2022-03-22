@@ -25,6 +25,8 @@ const FieldForm = ({onSave, groups, typesOfField, setGroups, dateFormats}) => {
         setTypeOfField(e);
         if (e === 'Datetime'){
             setIsShowDateFormat(true);
+        }else{
+            setIsShowDateFormat(false);
         }
     }
     const onChangeGroupIdFieldHandler = (e) => {
@@ -40,9 +42,21 @@ const FieldForm = ({onSave, groups, typesOfField, setGroups, dateFormats}) => {
         setName('');
     };
 
+    const [nameOfFieldObject, setNameOfFieldObject] = useState({
+        placeholder : "write the name of field",
+        error: '',
+    });
+
+
     const handleSubmit = (e) => {
         e.preventDefault();
-
+        if (nameOfField===''){
+            setNameOfFieldObject({
+                placeholder : "name of field can not be empty",
+                error: 'error',
+            })
+            return;
+        }
         onSave({
             name: nameOfField,
             type: typeOfField,
@@ -59,82 +73,90 @@ const FieldForm = ({onSave, groups, typesOfField, setGroups, dateFormats}) => {
 
     return (
         <>
-            <div className="field-container">
-                <div className="field-child">
-                    <label>Name ✍️</label>
-                    <Input value={nameOfField} onChange={(event) => setNameOfField(textToContest(event.target.value))} placeholder="write the name of field" />
-                </div>
-                <div className="field-child">
-                    <label>Static 👇</label>
-                    <div><Switch defaultChecked onChange={onChangeStaticFieldHandler} /></div>
-                </div>
-                <div className="field-child">
-                    <label>Type 🚴‍♀️</label>
-                    <div>
-                        <Select
-                            showSearch
-                            placeholder="Select type of field"
-                            optionFilterProp="children"
-                            onChange={onChangeTypeFieldHandler}
-                            filterOption={(input, option) =>
-                                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                            }
-                        >
-                            {
-                                typesOfField.map((item, key)=>{
-                                    return <Select.Option key={key} value={item}>{item}</Select.Option>
-                                })
-                            }
-                        </Select>
+            <div className="field-container-parent">
+                <div className="field-container">
+                    <div className="field-child">
+                        <label>Name ✍️</label>
+                        <Input status={nameOfFieldObject.error} value={nameOfField} onChange={(event) => setNameOfField(textToContest(event.target.value))} placeholder={nameOfFieldObject.placeholder} />
                     </div>
+                    <div className="field-child">
+                        <label>Static 👇</label>
+                        <div><Switch defaultChecked onChange={onChangeStaticFieldHandler} /></div>
+                    </div>
+                    <div className="field-child">
+                        <label>Type 🚴‍♀️</label>
+                        <div>
+                            <Select style={{'width':'200px'}}
+                                    showSearch
+                                    placeholder="Select type of field"
+                                    optionFilterProp="children"
+                                    onChange={onChangeTypeFieldHandler}
+                                    filterOption={(input, option) =>
+                                        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                    }
+                            >
+                                {
+                                    typesOfField.filter(item => {
+                                        if (isStatic) return item !== 'array';
+                                        return true
+                                    }).map((item, key)=>{
+
+                                        return <Select.Option key={key} value={item}>{item}</Select.Option>
+                                    })
+                                }
+                            </Select>
+                        </div>
+                    </div>
+                    {isShowDateFormat && <div className="field-child">
+                        <label>Date Format ⏳</label>
+                        <div>
+                            <Select style={{'width':'200px'}}
+                                    showSearch
+                                    onChange={onChangeDateFormatFieldHandler}
+                                    placeholder="Select a format"
+                                    optionFilterProp="children"
+                                    filterOption={(input, option) =>
+                                        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                    }
+                            >
+                                {
+                                    dateFormats.map((item, key)=>{
+                                        return <Select.Option key={key} value={item}>{item}</Select.Option>
+                                    })
+                                }
+                            </Select>
+                        </div>
+                    </div>}
+                    {!isStatic && <div className="field-child">
+                        <label>Group Id 👨‍👩‍👧‍👧</label>
+                        <div>
+                            <Select
+                                style={{'width':'300px'}}
+                                onChange={onChangeGroupIdFieldHandler}
+                                placeholder="add the group for field 👨‍👩‍👧‍👧"
+                                dropdownRender={menu => (
+                                    <>
+                                        {menu}
+                                        <Divider style={{ margin: '8px 0' }} />
+                                        <Space align="center" style={{ padding: '0 8px 4px' }}>
+                                            <Input  placeholder="group name 👨‍👩‍👦" value={name} onChange={onNameChange}/>
+                                            <Typography.Link onClick={addItem} style={{ whiteSpace: 'nowrap' }}>
+                                                <PlusOutlined /> Add item
+                                            </Typography.Link>
+                                        </Space>
+                                    </>
+                                )}
+                            >
+                                {items.map(item => (
+                                    <Select.Option key={item}>{item}</Select.Option>
+                                ))}
+                            </Select>
+                        </div>
+                    </div>}
                 </div>
-                {isShowDateFormat && <div className="field-child">
-                    <label>Date Format ⏳</label>
-                    <div>
-                        <Select
-                            showSearch
-                            onChange={onChangeDateFormatFieldHandler}
-                            placeholder="Select a format"
-                            optionFilterProp="children"
-                            filterOption={(input, option) =>
-                                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                            }
-                        >
-                            {
-                                dateFormats.map((item, key)=>{
-                                    return <Select.Option key={key} value={item}>{item}</Select.Option>
-                                })
-                            }
-                        </Select>
-                    </div>
-                </div>}
-                {!isStatic && <div className="field-child">
-                    <label>Group Id 👨‍👩‍👧‍👧</label>
-                    <div>
-                        <Select
-                            style={{ width: "100%" }}
-                            onChange={onChangeGroupIdFieldHandler}
-                            placeholder="add the group for field 👨‍👩‍👧‍👧"
-                            dropdownRender={menu => (
-                                <>
-                                    {menu}
-                                    <Divider style={{ margin: '8px 0' }} />
-                                    <Space align="center" style={{ padding: '0 8px 4px' }}>
-                                        <Input  placeholder="group name 👨‍👩‍👦" value={name} onChange={onNameChange}/>
-                                        <Typography.Link onClick={addItem} style={{ whiteSpace: 'nowrap' }}>
-                                            <PlusOutlined /> Add item
-                                        </Typography.Link>
-                                    </Space>
-                                </>
-                            )}
-                        >
-                            {items.map(item => (
-                                <Select.Option key={item}>{item}</Select.Option>
-                            ))}
-                        </Select>
-                    </div>
-                </div>}
-                <Button onClick={handleSubmit} type="primary">Save</Button>
+                <div className="field-action">
+                    <PlusOutlined style={{ fontSize: '20px', color: '#08c' }} onClick={handleSubmit} />
+                </div>
             </div>
         </>
     )
