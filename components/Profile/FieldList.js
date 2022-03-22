@@ -3,6 +3,7 @@ import { RiCloseCircleLine } from 'react-icons/ri';
 import { TiEdit } from 'react-icons/ti';
 import FieldForm from "./FieldForm";
 import Field from "./Field";
+import NewForm from "./NewForm";
 
 const FieldList = ({dateFormats, fieldTypes }) => {
     const [fields, setFields] = useState([]);
@@ -16,12 +17,9 @@ const FieldList = ({dateFormats, fieldTypes }) => {
     };
 
 
-    console.log(fieldTypes)
-    console.log(dateFormats)
-
     return (
         <>
-            <FieldForm onSave={onSave} dateFormats={dateFormats} typesOfField={fieldTypes} groups={groups} setGroups={setGroups} />
+            <NewForm onSave={onSave} dateFormats={dateFormats} fieldTypes={fieldTypes} propsGroups={groups} setPropsGroups={setGroups} />
             <Field
                 fields={fields}
             />

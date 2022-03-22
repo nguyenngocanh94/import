@@ -4,7 +4,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import {textToContest} from "../../functions/input";
 
 
-const FieldForm = ({onSave, groups, typesOfField, setGroups, dateFormats}) => {
+const FieldForm = ({onSave, groups, typesOfField, setGroupsProp, dateFormats}) => {
     const [isStatic, setIsStatic] = useState(true);
     const [isShowDateFormat, setIsShowDateFormat] = useState(false);
     let index = 0;
@@ -38,7 +38,7 @@ const FieldForm = ({onSave, groups, typesOfField, setGroups, dateFormats}) => {
     const addItem = e => {
         e.preventDefault();
         setItems([...items, name || `New item ${index++}`]);
-        setGroups(items);
+        setGroupsProp(items);
         setName('');
     };
 
